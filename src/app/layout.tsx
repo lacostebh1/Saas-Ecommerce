@@ -4,6 +4,8 @@ import "./globals.css";
 import { site } from "@/lib/site";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { AnalyticsPixels } from "@/components/analytics/pixels";
+import { CookieBanner } from "@/components/layout/cookie-banner";
 
 const fredoka = Fredoka({
   subsets: ["latin"],
@@ -45,6 +47,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteHeader />
         <div className="flex-1">{children}</div>
         <SiteFooter />
+        <CookieBanner />
+        <AnalyticsPixels />
       </body>
     </html>
   );
