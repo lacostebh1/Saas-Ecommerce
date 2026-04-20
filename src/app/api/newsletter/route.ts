@@ -1,10 +1,18 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { sendEmail } from "@/server/email";
+import { getClientIp, rateLimit } from "@/server/rate-limit";
 
 const schema = z.object({ email: z.string().email() });
 
 export async function POST(req: Request) {
+  const limit = rateLimit(`newsletter:${getClientIp(req)}`, 5, 3600);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: "Trop d'inscriptions depuis cette IP." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSec) } }
+    );
+  }
   const parsed = schema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
     return NextResponse.json({ error: "Email invalide" }, { status: 400 });

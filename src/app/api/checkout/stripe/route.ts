@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getStripe } from "@/server/stripe";
 import { getProduct } from "@/lib/catalog";
 import { site } from "@/lib/site";
+import { getCurrentUser } from "@/server/auth";
 
 const itemSchema = z.object({
   productId: z.string(),
@@ -46,18 +47,21 @@ export async function POST(req: Request) {
     };
   });
 
+  const currentUser = await getCurrentUser();
   const stripe = getStripe();
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     line_items,
-    customer_email: parsed.data.customer?.email,
+    customer_email: currentUser?.email ?? parsed.data.customer?.email,
+    client_reference_id: currentUser?.id,
     payment_method_types: ["card"],
     success_url: `${site.url}/checkout/merci?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${site.url}/panier`,
     shipping_address_collection: { allowed_countries: ["FR", "BE", "CH", "LU", "MC"] },
     phone_number_collection: { enabled: true },
     automatic_tax: { enabled: false },
-    allow_promotion_codes: true
+    allow_promotion_codes: true,
+    metadata: currentUser ? { userId: currentUser.id } : undefined
   });
 
   return NextResponse.json({ url: session.url });

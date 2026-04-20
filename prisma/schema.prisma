@@ -1,0 +1,109 @@
+// SmartRobotMo — schéma Prisma
+// Génère le client avec: npx prisma generate
+// Crée la migration avec: npx prisma migrate dev --name init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  role         Role     @default(customer)
+  createdAt    DateTime @default(now())
+  orders       Order[]
+  sessions     Session[]
+}
+
+enum Role {
+  customer
+  admin
+}
+
+model Session {
+  token     String   @id
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Product {
+  id             String   @id
+  slug           String   @unique
+  name           String
+  tagline        String
+  description    String
+  priceCents     Int
+  compareAtCents Int?
+  currency       String   @default("EUR")
+  ageRange       String
+  rating         Float    @default(0)
+  reviewsCount   Int      @default(0)
+  bullets        String[] @default([])
+  inStock        Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  items          OrderItem[]
+}
+
+model Order {
+  id              String       @id @default(cuid())
+  externalId      String       @unique
+  userId          String?
+  email           String
+  status          OrderStatus  @default(pending)
+  totalCents      Int
+  currency        String       @default("EUR")
+  paymentProvider PaymentProvider
+  shippingName    String?
+  shippingLine1   String?
+  shippingLine2   String?
+  shippingPostal  String?
+  shippingCity    String?
+  shippingCountry String?
+  carrier         String?
+  trackingNumber  String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  user            User?        @relation(fields: [userId], references: [id])
+  items           OrderItem[]
+
+  @@index([userId])
+  @@index([email])
+}
+
+model OrderItem {
+  id         String  @id @default(cuid())
+  orderId    String
+  productId  String
+  name       String
+  priceCents Int
+  quantity   Int
+  order      Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product    Product @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+}
+
+enum OrderStatus {
+  pending
+  paid
+  shipped
+  delivered
+  refunded
+  cancelled
+}
+
+enum PaymentProvider {
+  stripe
+  paypal
+}

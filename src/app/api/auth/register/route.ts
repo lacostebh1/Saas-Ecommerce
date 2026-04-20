@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createUser, startSession } from "@/server/auth";
+import { getClientIp, rateLimit } from "@/server/rate-limit";
 
 const schema = z.object({
   email: z.string().email(),
@@ -9,6 +10,13 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
+  const limit = rateLimit(`register:${getClientIp(req)}`, 3, 600);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: "Trop de tentatives." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSec) } }
+    );
+  }
   const parsed = schema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid input" }, { status: 400 });

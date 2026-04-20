@@ -7,6 +7,7 @@ import { sendEmail, orderConfirmationHtml } from "@/server/email";
 import { store } from "@/server/db";
 import { formatPrice } from "@/lib/format";
 import { site } from "@/lib/site";
+import { captureError } from "@/server/monitoring";
 
 export const runtime = "nodejs";
 
@@ -22,6 +23,7 @@ export async function POST(req: Request) {
   try {
     event = getStripe().webhooks.constructEvent(payload, signature, secret);
   } catch (err) {
+    captureError(err, { tags: { area: "stripe-webhook" } });
     return NextResponse.json(
       { error: `Invalid signature: ${(err as Error).message}` },
       { status: 400 }
@@ -35,13 +37,26 @@ export async function POST(req: Request) {
     const email = session.customer_details?.email ?? undefined;
 
     const orderId = session.id;
+    const userId = session.client_reference_id ?? session.metadata?.userId ?? undefined;
+    const shippingDetails = session.collected_information?.shipping_details ?? null;
     store.orders.set(orderId, {
       id: orderId,
+      userId,
       email: email ?? "unknown@local",
       status: "paid",
       totalCents: session.amount_total ?? 0,
       currency,
       items: [],
+      shipping: shippingDetails
+        ? {
+            name: shippingDetails.name ?? "",
+            line1: shippingDetails.address?.line1 ?? "",
+            line2: shippingDetails.address?.line2 ?? undefined,
+            postalCode: shippingDetails.address?.postal_code ?? "",
+            city: shippingDetails.address?.city ?? "",
+            country: shippingDetails.address?.country ?? ""
+          }
+        : undefined,
       paymentProvider: "stripe",
       externalId: session.id,
       createdAt: new Date().toISOString()

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { getClientIp, rateLimit } from "@/server/rate-limit";
 
 const schema = z.object({
   name: z.string().min(1).max(100),
@@ -8,6 +9,13 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
+  const limit = rateLimit(`contact:${getClientIp(req)}`, 5, 3600);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: "Trop de messages envoyés." },
+      { status: 429 }
+    );
+  }
   const body = Object.fromEntries((await req.formData()).entries());
   const parsed = schema.safeParse(body);
   if (!parsed.success) {
