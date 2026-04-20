@@ -8,6 +8,7 @@ import { AddToCart } from "@/components/product/add-to-cart";
 import { Reviews } from "@/components/sections/reviews";
 import { products, getProduct, faq } from "@/lib/catalog";
 import { formatPrice } from "@/lib/format";
+import { site } from "@/lib/site";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -36,8 +37,35 @@ export default async function ProductPage({
   const product = getProduct(slug);
   if (!product) notFound();
 
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description,
+    sku: product.id,
+    brand: { "@type": "Brand", name: "SmartRobotMo" },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: product.rating,
+      reviewCount: product.reviewsCount
+    },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: product.currency,
+      price: (product.priceCents / 100).toFixed(2),
+      availability: product.inStock
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      url: `${site.url}/produit/${product.slug}`
+    }
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
       <Container className="grid gap-10 py-12 lg:grid-cols-2">
         <ProductGallery images={product.images} />
         <div className="space-y-5">

@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/container";
 import { LinkButton } from "@/components/ui/button";
 import { useCart } from "@/lib/cart/store";
 import { formatPrice } from "@/lib/format";
+import { CartUpsell } from "@/components/cart/upsell";
 
 export default function CartPage() {
   const items = useCart((s) => s.items);
@@ -76,6 +77,8 @@ export default function CartPage() {
           ))}
         </ul>
       </div>
+      <div className="space-y-6">
+        <CartUpsell />
       <aside className="h-fit rounded-blob bg-brand-mint/40 p-6">
         <h2 className="text-xl font-bold">Récap</h2>
         <dl className="mt-4 space-y-2 text-sm">
@@ -99,6 +102,7 @@ export default function CartPage() {
           Paiement sécurisé · 30 jours satisfait ou remboursé
         </p>
       </aside>
+      </div>
     </Container>
   );
 }
