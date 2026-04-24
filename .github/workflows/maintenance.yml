@@ -1,8 +1,10 @@
-name: Maintenance (4h)
+name: Maintenance (manual)
 
 on:
-  schedule:
-    - cron: "0 */4 * * *"
+  # Cron toutes les 4h désactivé — relance-le manuellement via l'onglet Actions
+  # ou décommente ci-dessous pour le réactiver.
+  # schedule:
+  #   - cron: "0 */4 * * *"
   workflow_dispatch:
 
 permissions:
