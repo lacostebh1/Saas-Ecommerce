@@ -180,7 +180,7 @@ export default function Home() {
           <div>
             <h4>SmartRobotMo</h4>
             <p>SMARTROBOTMO LTD — société enregistrée en Angleterre &amp; Pays de Galles.<br />
-            Contact : aberriane2000@gmail.com<br />
+            Contact : contact@smartrobotmo.com<br />
             www.smartrobotmo.com</p>
           </div>
           <div>

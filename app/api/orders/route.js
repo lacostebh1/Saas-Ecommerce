@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { addOrder, getOrders, newOrderId } from '../../../lib/orders';
+import { addOrder, getOrders, newOrderId, deleteOrderBlob } from '../../../lib/orders';
 
 const PRICE = 59.9;
 const ADMIN_KEY = process.env.ADMIN_KEY || 'smartrobotmo2026';
@@ -38,4 +38,21 @@ export async function GET(req) {
   }
   const orders = await getOrders();
   return NextResponse.json({ orders });
+}
+
+export async function DELETE(req) {
+  const url = new URL(req.url);
+  if (url.searchParams.get('key') !== ADMIN_KEY) {
+    return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
+  }
+  const id = url.searchParams.get('id');
+  if (!id || id.includes('/') || id.includes('\\') || id.includes('..')) {
+    return NextResponse.json({ error: 'id invalide' }, { status: 400 });
+  }
+  try {
+    const deleted = await deleteOrderBlob(id);
+    return NextResponse.json({ ok: true, deleted });
+  } catch (e) {
+    return NextResponse.json({ error: 'Suppression impossible' }, { status: 500 });
+  }
 }
