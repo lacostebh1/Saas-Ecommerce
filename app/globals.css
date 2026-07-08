@@ -92,7 +92,7 @@ section { padding: 56px 0; }
 
 /* Gallery */
 .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.gallery-grid img { width: 100%; border-radius: 14px; border: 1px solid rgba(79, 195, 255, 0.15); }
+.gallery-grid img, .gallery-grid video { width: 100%; border-radius: 14px; border: 1px solid rgba(79, 195, 255, 0.15); }
 
 /* Reviews */
 .reviews { background: var(--navy-2); }

@@ -6,7 +6,9 @@ export default function Home() {
       <div className="announce">🚚 Livraison OFFERTE en France, Belgique, Espagne, Pays-Bas &amp; Pologne — Offre de lancement −25%</div>
       <header className="header">
         <div className="header-inner">
-          <a className="logo" href="#top">Smart<span>Robot</span>Mo</a>
+          <a className="logo" href="#top">
+            <img src="/img/logo.png" alt="SmartRobotMo" style={{ height: 48, width: 'auto', display: 'block' }} />
+          </a>
           <a className="cta-mini" href="#commander">Commander</a>
         </div>
       </header>
@@ -79,8 +81,8 @@ export default function Home() {
             <h2 className="section-title">SmartBot One en action</h2>
             <p className="section-sub">Visière LED animée, torse lumineux, télécommande ergonomique — 32 cm de présence.</p>
             <div className="gallery-grid">
-              <img src="/img/robot-3.jpg" alt="Enfant jouant avec le robot SmartBot One dans le salon" />
-              <img src="/img/robot-4.jpg" alt="Système lumineux LED du visage et du torse" />
+              <video src="/video/gestuel.mp4" autoPlay muted loop playsInline controls preload="metadata" aria-label="Le SmartBot One obéit au geste de la main" />
+              <video src="/video/danse.mp4" muted loop playsInline controls preload="metadata" aria-label="Le SmartBot One danse" />
               <img src="/img/robot-2.jpg" alt="SmartBot One avec sa boîte et sa télécommande" />
             </div>
           </div>
