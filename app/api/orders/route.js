@@ -7,7 +7,7 @@ const ADMIN_KEY = process.env.ADMIN_KEY || 'smartrobotmo2026';
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { name, email, phone, address, city, zip, country, quantity, payment } = body;
+    const { name, email, phone, address, city, zip, country, quantity, payment, lang } = body;
     if (!name || !phone || !address || !city || !country) {
       return NextResponse.json({ error: 'Champs obligatoires manquants.' }, { status: 400 });
     }
@@ -22,7 +22,7 @@ export async function POST(req) {
       currency: 'EUR',
       payment: payment === 'card' ? 'card' : 'cod',
       status: payment === 'card' ? 'awaiting_payment' : 'confirmed_cod',
-      customer: { name, email: email || '', phone, address, city, zip: zip || '', country },
+      customer: { name, email: email || '', phone, address, city, zip: zip || '', country, lang: typeof lang === 'string' ? lang.slice(0, 2) : 'fr' },
     };
     await addOrder(order);
     return NextResponse.json({ ok: true, orderId: order.id, total: order.total, payment: order.payment });

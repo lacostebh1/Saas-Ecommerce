@@ -1,5 +1,6 @@
 import './globals.css';
 import Pixels from './pixels';
+import { LangProvider } from './lang-context';
 
 export const metadata = {
   title: 'SmartBot One — Robot humanoïde intelligent | SmartRobotMo',
@@ -20,7 +21,7 @@ export default function RootLayout({ children }) {
     <html lang="fr">
       <body>
         <Pixels />
-        {children}
+        <LangProvider>{children}</LangProvider>
       </body>
     </html>
   );
