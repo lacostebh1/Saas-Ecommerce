@@ -96,6 +96,7 @@ export default function OrderForm() {
             <option>France</option>
             <option>Belgique</option>
             <option>Espagne</option>
+            <option>Italie</option>
             <option>Pays-Bas</option>
             <option>Pologne</option>
           </select>

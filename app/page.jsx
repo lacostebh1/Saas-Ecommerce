@@ -3,7 +3,7 @@ import OrderForm from './order-form';
 export default function Home() {
   return (
     <>
-      <div className="announce">🚚 Livraison OFFERTE en France, Belgique, Espagne, Pays-Bas &amp; Pologne — Offre de lancement −25%</div>
+      <div className="announce">🚚 Livraison OFFERTE en France, Belgique, Espagne, Italie, Pays-Bas &amp; Pologne — Offre de lancement −25%</div>
       <header className="header">
         <div className="header-inner">
           <a className="logo" href="#top">
@@ -150,7 +150,7 @@ export default function Home() {
             </details>
             <details className="faq-item">
               <summary>Quels sont les délais de livraison ?</summary>
-              <div className="answer">Expédition sous 24-48h, livraison suivie en 7 à 14 jours ouvrés en France, Belgique, Espagne, Pays-Bas et Pologne. Un numéro de suivi vous est envoyé par e-mail.</div>
+              <div className="answer">Expédition sous 24-48h, livraison suivie en 7 à 14 jours ouvrés en France, Belgique, Espagne, Italie, Pays-Bas et Pologne. Un numéro de suivi vous est envoyé par e-mail.</div>
             </details>
             <details className="faq-item">
               <summary>Comment fonctionne le paiement ?</summary>
