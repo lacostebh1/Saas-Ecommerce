@@ -5,10 +5,11 @@ import { useLang } from './lang-context';
 import { LANGS } from '../lib/i18n';
 
 // Avis clients affichés dans leur langue d'origine (premiers acheteurs européens)
+// Avis réels d'achats vérifiés, relevés sur l'annonce du fabricant (JJRC R40) — photos d'acheteurs de la même annonce.
 const REVIEWS = [
-  { img: '/img/review-1.jpg', stars: '★★★★★', text: '« Reçu en 10 jours, très bien emballé. Mon fils de 7 ans ne le lâche plus, le contrôle par gestes fonctionne vraiment bien. »', who: 'Sandrine M. — Lille, France' },
-  { img: '/img/review-2.jpg', stars: '★★★★★', text: '« Los efectos de luz son impresionantes y el modo baile es divertidísimo. Calidad mejor de lo esperado. »', who: 'Carlos R. — Valencia, España' },
-  { img: '/img/review-3.jpg', stars: '★★★★☆', text: '« Robot świetnie chodzi i tańczy, pilot jest prosty w obsłudze. Idealny prezent na urodziny. »', who: 'Kasia W. — Warszawa, Polska' },
+  { img: '/img/review-1.jpg', stars: '★★★★★', text: '« Le robot est conforme à la description, la qualité est bonne. La batterie était chargée, il a fonctionné immédiatement. Les enfants ont vraiment adoré. Je le recommande ! »', who: 'a***r — achat vérifié' },
+  { img: '/img/review-2.jpg', stars: '★★★★★', text: '« Excellent produit, excellent vendeur. Le produit est arrivé en bon état, sans aucun dommage ni défaut. »', who: 'Acheteur vérifié' },
+  { img: '/img/review-3.jpg', stars: '★★★★☆', text: "« Je l'ai essayé un instant et c'est sympa ^^ »", who: 's***o — achat vérifié' },
 ];
 
 export default function Home() {
@@ -44,8 +45,6 @@ export default function Home() {
               </div>
               <div className="price-row">
                 <span className="price">59,90 €</span>
-                <span className="price-old">79,90 €</span>
-                <span className="price-tag">−25%</span>
               </div>
               <a className="cta" href="#commander">{t.hero.cta}</a>
               <p className="hero-note">{t.hero.note}</p>
@@ -113,7 +112,6 @@ export default function Home() {
               <h2 className="section-title">{t.offer.title}</h2>
               <div className="price-row" style={{ justifyContent: 'center' }}>
                 <span className="price">59,90 €</span>
-                <span className="price-old">79,90 €</span>
               </div>
               <ul className="offer-list">
                 {t.offer.list.map((li) => <li key={li}>{li}</li>)}
