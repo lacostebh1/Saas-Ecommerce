@@ -1,9 +1,13 @@
 // Marketing pixels — activate automatically when the env vars are set on Vercel:
 //   NEXT_PUBLIC_TIKTOK_PIXEL_ID (starts with C…)
 //   NEXT_PUBLIC_META_PIXEL_ID   (numeric)
+// L'ID pixel Meta est public par nature (visible dans le HTML de toute page) — fallback commité,
+// surchargeable par NEXT_PUBLIC_META_PIXEL_ID sur Vercel.
+const META_PIXEL_ID = '1759810528271255';
+
 export default function Pixels() {
   const tt = process.env.NEXT_PUBLIC_TIKTOK_PIXEL_ID;
-  const fb = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const fb = process.env.NEXT_PUBLIC_META_PIXEL_ID || META_PIXEL_ID;
   return (
     <>
       {tt && (
@@ -16,7 +20,7 @@ export default function Pixels() {
       {fb && (
         <script
           dangerouslySetInnerHTML={{
-            __html: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${fb}');fbq('track','PageView');`,
+            __html: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${fb}');fbq('track','PageView');fbq('track','ViewContent',{content_ids:['smartbot-one'],content_type:'product',content_name:'SmartBot One',value:59.90,currency:'EUR'});`,
           }}
         />
       )}
