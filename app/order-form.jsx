@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useLang } from './lang-context';
 
 const PRODUCT = { content_id: 'smartbot-one', content_type: 'product', content_name: 'SmartBot One' };
-const COUNTRIES = ['France', 'Belgique', 'Espagne', 'Italie', 'Pays-Bas', 'Pologne', 'Roumanie', 'Bulgarie'];
+const COUNTRIES = ['France', 'Belgique', 'Espagne', 'Italie', 'Pays-Bas', 'Pologne', 'Roumanie', 'Bulgarie', 'Grèce', 'Hongrie', 'Tchéquie', 'Slovaquie', 'Croatie'];
 const eur = (n) => n.toFixed(2).replace('.', ',') + ' €';
 
 function trackPixels(event, value) {
